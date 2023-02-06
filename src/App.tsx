@@ -1,5 +1,12 @@
+import { GlobalStyles } from "./styled-components";
 function App() {
-  return <div className="App">hello</div>;
+  return (
+    <>
+      <GlobalStyles />
+
+      <p>hello</p>
+    </>
+  );
 }
 
 export default App;
