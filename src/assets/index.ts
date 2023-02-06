@@ -7,3 +7,4 @@ export { default as logo } from "./images/logo.png";
 export { default as mail } from "./images/mail.png";
 export { default as phone } from "./images/phone.png";
 export { default as redberryLogo } from "./images/redberry-logo.png";
+export { default as leftArrow } from "./images/leftArrow.png";
