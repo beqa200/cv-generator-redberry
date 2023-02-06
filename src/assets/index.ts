@@ -1,0 +1,9 @@
+export { default as background } from "./images/background.png";
+export { default as calendar } from "./images/calendar.png";
+export { default as iconCV } from "./images/cv-icon.png";
+export { default as done } from "./images/done.png";
+export { default as error } from "./images/error.png";
+export { default as logo } from "./images/logo.png";
+export { default as mail } from "./images/mail.png";
+export { default as phone } from "./images/phone.png";
+export { default as redberryLogo } from "./images/redberry-logo.png";
