@@ -11,6 +11,7 @@ import {
 } from "../styled-components/components/Inputs";
 import { done, error } from "../assets";
 import { useNavigate } from "react-router-dom";
+import CV from "../components/CV";
 
 export default function Personal() {
   const context = useContext(MyContext);
@@ -155,7 +156,7 @@ export default function Personal() {
                 style={{ display: "none" }}
               />
             </label>
-            <img src={watch("image")} style={{ width: "80px" }} />
+           
             <p style={{ color: "red" }}>{errors.image?.message}</p>
           </div>
           <label className="about">
@@ -167,6 +168,7 @@ export default function Personal() {
               placeholder="ზოგადი ინფო შენ შესახებ"
               {...register("about")}
               onChange={(e) => {
+                handleChange(e);
                 setAbout(true);
               }}
             />
@@ -197,6 +199,7 @@ export default function Personal() {
                 <img src={done} className="done-image" />
               )
             ) : null}
+            <p>უნდა მთავრდებოდეს @redberry.ge-ით</p>
           </label>
 
           <label className="phone">
@@ -226,6 +229,7 @@ export default function Personal() {
                 <img src={done} className="done-image" />
               )
             ) : null}
+            <p>უნდა აკმაყოფილებდეს ქართული მობილურის ნომრის ფორმატს</p>
           </label>
 
           <button
@@ -242,16 +246,23 @@ export default function Personal() {
           </button>
         </form>
       </main>
+      <CV
+        firstname={watch("firstname")}
+        lastname={watch("lastname")}
+        image={watch("image")}
+        about={watch("about")}
+        email={watch("email")}
+        phone={watch("phone")}
+      />
     </PersonalWrapper>
   );
 }
 
 const PersonalWrapper = styled.div`
+  display: flex;
   main {
     width: 1098px;
     background-color: #f9f9f9;
-    height: 100vh;
-
     form {
       width: 798px;
       margin: 77px auto 0px;
@@ -325,6 +336,20 @@ const PersonalWrapper = styled.div`
         img {
           top: 44px;
         }
+      }
+
+      button {
+        margin-top: 160px;
+        margin-left: auto;
+        width: 151px;
+        height: 48px;
+        right: 972px;
+        bottom: 65px;
+        background: #6b40e3;
+        border-radius: 4px;
+        letter-spacing: 0.08em;
+        color: #ffffff;
+        border: none;
       }
     }
   }

@@ -13,3 +13,12 @@ interface Inputs {
     email: string;
     phone: string;
 }
+
+interface CVPropsTpye {
+    firstname: string;
+    lastname: string;
+    image: string;
+    about: string;
+    email: string;
+    phone: string;
+}
