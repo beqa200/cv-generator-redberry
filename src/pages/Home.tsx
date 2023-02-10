@@ -1,18 +1,23 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { background, logo, redberryLogo } from "../assets";
 
 export default function Home() {
+  const navigate = useNavigate();
   return (
     <HomeWrapper>
       <header>
         <img src={redberryLogo} />
       </header>
       <div>
-        <Link to="/personal">
-          <button>ᲠᲔᲖᲘᲣᲛᲔᲡ ᲓᲐᲛᲐᲢᲔᲑᲐ</button>
-        </Link>
+        <button
+          onClick={() => {
+            navigate("/personal");
+          }}
+        >
+          ᲠᲔᲖᲘᲣᲛᲔᲡ ᲓᲐᲛᲐᲢᲔᲑᲐ
+        </button>
       </div>
     </HomeWrapper>
   );
@@ -38,25 +43,16 @@ const HomeWrapper = styled.div`
     display: flex;
     justify-content: center;
 
-    a {
-        width: 464px;
-    height: 60px;    
-    }
-
     button {
-    width: 464px;
-    height: 60px;
-    background: #1a1a1a;
-    border-radius: 8px;
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 24px;
-    color: #ffffff;
-    margin-top: 424px;
+      width: 464px;
+      height: 60px;
+      background: #1a1a1a;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 24px;
+      color: #ffffff;
+      margin-top: 424px;
+    }
   }
-  }
-
-  
-
-  
 `;

@@ -1,6 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 import styled from "styled-components";
 
+
 const GlobalStyles = createGlobalStyle`
 @font-face {
   font-family: "Helvetica Neue";

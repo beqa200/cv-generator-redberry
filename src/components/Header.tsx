@@ -14,7 +14,7 @@ export default function Header() {
       <img
         src={leftArrow}
         onClick={() => {
-          navigate(-1);
+          navigate("/");
         }}
       />
     </HeaderWrapper>
