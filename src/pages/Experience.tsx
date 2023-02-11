@@ -7,15 +7,17 @@ import { ShortInput } from "../styled-components/components/Inputs";
 import { useForm } from "react-hook-form";
 import { error } from "../assets";
 import ExperienceForm from "../components/ExperienceForm";
+import { StyledAddButton, StyledButton } from "../styled-components";
+import { useNavigate } from "react-router-dom";
 export default function Experience() {
   const context = useContext(MyContext);
 
-  const [items, setItems] = useState<any>([{ position: "", employer: "" }]);
+  const [items, setItems] = useState<any>([{position: "", employer: "", startDate: "", endDate: "", description: ""}]);
   const [form, setForm] = useState(false);
+  const navigate = useNavigate();
   const addItem = () => {
-    const clone = [...items, { position: "", employer: "" }];
+    const clone = [...items, {position: "", employer: "", startDate: "", endDate: "", description: ""}];
     setItems(clone);
-
   };
   console.log(items);
   const {
@@ -27,18 +29,17 @@ export default function Experience() {
     formState: { errors },
   } = useForm<Inputs>({ mode: "all" });
   useEffect(() => {
-    const storedForm =  localStorage.getItem("form");
+   
+ const storedForm = localStorage.getItem("form");
     if (storedForm) {
       setItems(JSON.parse(storedForm));
     }
-
-    // localStorage.removeItem("form")
+    localStorage.removeItem("form")
   }, []);
 
   useEffect(() => {
     localStorage.setItem("form", JSON.stringify(items));
-
-  }, [items])
+  }, [items]);
 
   return (
     <ExperienceWrapper>
@@ -46,16 +47,31 @@ export default function Experience() {
         <Header />
 
         {items.map((item: any, index: any) => (
-          <ExperienceForm item={item} form={form} setForm={setForm} index={index} />
+          <ExperienceForm
+            item={item}
+            form={form}
+            setForm={setForm}
+            items={items}
+            setItems={setItems}
+            index={index}
+          />
         ))}
-        <button onClick={addItem}>Add</button>
-        <button
-          onClick={() => {
-            setForm(true);
-          }}
-        >
-          NExt
-        </button>
+        <StyledAddButton onClick={addItem} className="add">
+          მეტი გამოცდილების დამატება
+        </StyledAddButton>
+
+        <div className="buttons">
+          <StyledButton onClick={() => {
+            navigate(-1);
+          }}>ᲣᲙᲐᲜ</StyledButton>
+          <StyledButton
+            onClick={() => {
+              setForm(true);
+            }}
+          >
+            ᲨᲔᲛᲓᲔᲒᲘ
+          </StyledButton>
+        </div>
       </main>
     </ExperienceWrapper>
   );
@@ -67,9 +83,15 @@ const ExperienceWrapper = styled.div`
     width: 1098px;
     background-color: #f9f9f9;
 
-    button {
-      width: 40px;
-      height: 40px;
+    .add {
+      margin-left: 150px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      width: 798px;
+      margin: 111px auto;
     }
   }
 `;

@@ -13,6 +13,7 @@ import { done, error } from "../assets";
 import { useNavigate } from "react-router-dom";
 import CV from "../components/CV";
 import StyledForm from "../styled-components/components/Form";
+import { StyledButton } from "../styled-components";
 
 export default function Personal() {
   const context = useContext(MyContext);
@@ -82,8 +83,7 @@ export default function Personal() {
     console.log(data);
     if (Object.keys(watch("image")).length != 0) {
       navigate("/experience");
-    context?.setPageCount(2);
-
+      context?.setPageCount(2);
     }
   };
 
@@ -159,7 +159,7 @@ export default function Personal() {
                 style={{ display: "none" }}
               />
             </label>
-           
+
             <p style={{ color: "red" }}>{errors.image?.message}</p>
           </div>
           <label className="about">
@@ -235,7 +235,7 @@ export default function Personal() {
             <p>უნდა აკმაყოფილებდეს ქართული მობილურის ნომრის ფორმატს</p>
           </label>
 
-          <button
+          <StyledButton
             type="submit"
             onClick={(e) => {
               setFirstName(true);
@@ -246,7 +246,7 @@ export default function Personal() {
             }}
           >
             ᲨᲔᲛᲓᲔᲒᲘ
-          </button>
+          </StyledButton>
         </StyledForm>
       </main>
       <CV
@@ -266,13 +266,14 @@ export const PersonalWrapper = styled.div`
   main {
     width: 1098px;
     background-color: #f9f9f9;
+    
     form {
-      
       label {
-        font-weight: 500;
+        font-weight: 700;
         font-size: 16px;
         line-height: 21px;
         position: relative;
+       
         p {
           font-weight: 300;
           font-size: 14px;
@@ -337,17 +338,7 @@ export const PersonalWrapper = styled.div`
       }
 
       button {
-        margin-top: 160px;
         margin-left: auto;
-        width: 151px;
-        height: 48px;
-        right: 972px;
-        bottom: 65px;
-        background: #6b40e3;
-        border-radius: 4px;
-        letter-spacing: 0.08em;
-        color: #ffffff;
-        border: none;
       }
     }
   }

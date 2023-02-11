@@ -5,7 +5,7 @@ import { mail, phone } from "../assets";
 
 export default function CV(props: CVPropsTpye) {
   const context = useContext(MyContext);
-  console.log(context?.pageCount)
+  console.log(context?.pageCount);
   return (
     <CVWrapper>
       <section
@@ -14,7 +14,7 @@ export default function CV(props: CVPropsTpye) {
           context?.pageCount == 2 ? { borderBottom: "1px solid #C8C8C8" } : {}
         }
       >
-        <div style={{minWidth: "432px"}}>
+        <div style={{ minWidth: "432px" }}>
           <div className="fullname">
             <h1>{props.firstname}</h1>
             <h1>{props.lastname}</h1>
@@ -49,7 +49,9 @@ export default function CV(props: CVPropsTpye) {
 
 const CVWrapper = styled.div`
   width: 662px;
-  margin: 68px 80px 44px;
+  height: 968px;
+  padding: 68px 80px 44px;
+  background-color: #ffffff;
 
   .personal {
     display: flex;
