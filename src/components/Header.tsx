@@ -7,9 +7,12 @@ import { leftArrow } from "../assets";
 export default function Header() {
   const context = useContext(MyContext);
   const navigate = useNavigate();
+
+  
   return (
     <HeaderWrapper>
-      <h1>პირადი ინფო</h1>
+      {context?.pageCount == 1 && <h1>პირადი ინფო</h1>}
+      {context?.pageCount == 2 && <h1>გამოცდილება</h1>}
       <p>{context?.pageCount}/3</p>
       <img
         src={leftArrow}

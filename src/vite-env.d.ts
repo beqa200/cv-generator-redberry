@@ -12,6 +12,8 @@ interface Inputs {
     about: string;
     email: string;
     phone: string;
+    position: string;
+    employer: string;
 }
 
 interface CVPropsTpye {

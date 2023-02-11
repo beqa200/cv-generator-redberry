@@ -12,6 +12,7 @@ import {
 import { done, error } from "../assets";
 import { useNavigate } from "react-router-dom";
 import CV from "../components/CV";
+import StyledForm from "../styled-components/components/Form";
 
 export default function Personal() {
   const context = useContext(MyContext);
@@ -80,7 +81,9 @@ export default function Personal() {
   const onSubmit = (data: Inputs) => {
     console.log(data);
     if (Object.keys(watch("image")).length != 0) {
-      navigate("/");
+      navigate("/experience");
+    context?.setPageCount(2);
+
     }
   };
 
@@ -88,7 +91,7 @@ export default function Personal() {
     <PersonalWrapper>
       <main>
         <Header />
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <StyledForm onSubmit={handleSubmit(onSubmit)}>
           <label className="firstname">
             სახელი
             <br />
@@ -244,7 +247,7 @@ export default function Personal() {
           >
             ᲨᲔᲛᲓᲔᲒᲘ
           </button>
-        </form>
+        </StyledForm>
       </main>
       <CV
         firstname={watch("firstname")}
@@ -258,18 +261,13 @@ export default function Personal() {
   );
 }
 
-const PersonalWrapper = styled.div`
+export const PersonalWrapper = styled.div`
   display: flex;
   main {
     width: 1098px;
     background-color: #f9f9f9;
     form {
-      width: 798px;
-      margin: 77px auto 0px;
-      display: flex;
-      flex-wrap: wrap;
-      column-gap: 10%;
-
+      
       label {
         font-weight: 500;
         font-size: 16px;
