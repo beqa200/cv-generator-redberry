@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { MyContext } from "../App";
 import { background, logo, redberryLogo } from "../assets";
 
 export default function Home() {
   const navigate = useNavigate();
+    const context = useContext(MyContext);
+  useEffect(() => {
+    context.setcv(false);
+  }, [])
   return (
     <HomeWrapper>
       <header>
@@ -25,6 +30,7 @@ export default function Home() {
 
 const HomeWrapper = styled.div`
   height: 100vh;
+  width: 100%;
   background-image: url(${background}), url(${logo});
   background-size: cover, 299px;
   background-repeat: no-repeat;

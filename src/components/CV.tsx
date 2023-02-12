@@ -5,9 +5,7 @@ import { mail, phone } from "../assets";
 
 export default function CV() {
   const context = useContext(MyContext);
-  console.log(context?.pageCount);
 
- 
   return (
     <CVWrapper>
       <section
@@ -45,6 +43,31 @@ export default function CV() {
         </div>
         <img className="profile-image" src={context?.formData.image} />
       </section>
+
+      {context.formData.experiences && (
+        <section
+          className="experience"
+          style={
+            context?.pageCount == 3 ? { borderBottom: "1px solid #C8C8C8" } : {}
+          }
+        >
+          <h2>გამოცდილება</h2>
+          {context.formData.experiences.map((item: any) => (
+            <div className="inner">
+              <h3 className="position">
+                {item.position} {item.employer && ","} {item.employer}
+              </h3>
+
+              <p className="date">
+                {item.start_date} {item.start_date && item.due_date && "-"}{" "}
+                {item.due_date}
+              </p>
+
+              <p className="description">{item.description}</p>
+            </div>
+          ))}
+        </section>
+      )}
     </CVWrapper>
   );
 }
@@ -54,6 +77,14 @@ const CVWrapper = styled.div`
   height: 968px;
   padding: 68px 80px 44px;
   background-color: white;
+
+  h2 {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+    color: #f93b1d;
+    margin-top: 34px;
+  }
 
   .personal {
     display: flex;
@@ -89,14 +120,6 @@ const CVWrapper = styled.div`
     }
 
     .about {
-      h2 {
-        font-weight: 700;
-        font-size: 18px;
-        line-height: 22px;
-        color: #f93b1d;
-        margin-top: 34px;
-      }
-
       p {
         margin-top: 15px;
         margin-bottom: 19px;
@@ -114,6 +137,38 @@ const CVWrapper = styled.div`
       height: 246px;
       border-radius: 100%;
       margin-bottom: 47px;
+    }
+  }
+
+  .experience {
+    h2 {
+      margin-top: 24px;
+    }
+
+    .position {
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 20px;
+      margin-top: 15px;
+      color: #1a1a1a;
+    }
+
+    .date {
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 19px;
+      color: #919191;
+      margin-top: 7px;
+    }
+
+    .description {
+      width: 662px;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 22px;
+      text-transform: capitalize;
+      color: #000000;
+      word-wrap: break-word;
     }
   }
 `;

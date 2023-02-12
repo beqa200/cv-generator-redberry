@@ -9,6 +9,7 @@ import {
 import { useForm } from "react-hook-form";
 import { done, error } from "../assets";
 import StyledForm from "../styled-components/components/Form";
+import { useNavigate } from "react-router-dom";
 export default function ExperienceForm(props: any) {
   const context = useContext(MyContext);
   const [position, setPosition] = useState(false);
@@ -16,6 +17,7 @@ export default function ExperienceForm(props: any) {
   const [start_date, setStart_date] = useState(false);
   const [due_date, setDue_Date] = useState(false);
   const [description, setDescription] = useState(false);
+  const navigate = useNavigate();
 
   const updateFormState = (index: number, event: any, property: string) => {
     const newItems = [...context?.formData.experiences];
@@ -51,6 +53,7 @@ export default function ExperienceForm(props: any) {
     setDue_Date(false);
     setDescription(false);
     clearErrors();
+   
   };
   function isAllPropertiesEmpty(arr: any) {
     for (let i = 0; i < arr.length; i++) {
@@ -85,8 +88,10 @@ export default function ExperienceForm(props: any) {
         } else {
           if (checkEverythingEmpty()) {
             clearEveryErrors();
+          
           } else {
             triggerErrors();
+            
           }
         }
       } else {
@@ -96,8 +101,17 @@ export default function ExperienceForm(props: any) {
           triggerErrors();
         }
       }
+      
     }
+   
   }, [props.form]);
+
+  if (errors) {
+    const clone = props.everyError;
+    clone[props.index] = errors;
+    props.setEveryError(clone);
+  }
+  
 
   useEffect(() => {
     if (checkEverythingEmpty()) {

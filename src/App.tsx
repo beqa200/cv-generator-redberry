@@ -11,9 +11,9 @@ import styled from "styled-components";
 export const MyContext = createContext<ContextProps | any>(null);
 function App() {
   const [pageCount, setPageCount] = useState<number>(1);
-
+  const [cv, setcv] = useState(false);
   const storedFormData = localStorage.getItem("formData");
-
+  const storedErrors = localStorage.getItem("errors");
   useEffect(() => {
     if (storedFormData != undefined) {
       setFormData(JSON.parse(storedFormData));
@@ -48,7 +48,15 @@ function App() {
 
   return (
     <MyContext.Provider
-      value={{ pageCount, setPageCount, storedFormData, formData, setFormData }}
+      value={{
+        pageCount,
+        setPageCount,
+        storedFormData,
+        formData,
+        setFormData,
+        storedErrors,
+        setcv
+      }}
     >
       <GlobalStyles />
       <MainWrapper>
@@ -59,7 +67,7 @@ function App() {
             <Route path="/experience" element={<Experience />} />
           </Routes>
         </BrowserRouter>
-        <CV />
+        {cv && <CV />}
       </MainWrapper>
     </MyContext.Provider>
   );

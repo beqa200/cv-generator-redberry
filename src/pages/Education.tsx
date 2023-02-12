@@ -14,11 +14,10 @@ export default function Experience() {
   console.log(check);
   const [items, setItems] = useState<any>([
     {
-      position: "",
-      employer: "",
-      start_date: "",
-      due_date: "",
-      description: "",
+        institute: "",
+        degree_id: "",
+        due_date: "",
+        description: "",
     },
   ]);
   const [form, setForm] = useState(false);
@@ -28,9 +27,8 @@ export default function Experience() {
     const clone = [
       ...items,
       {
-        position: "",
-        employer: "",
-        start_date: "",
+        institute: "",
+        degree_id: "",
         due_date: "",
         description: "",
       },
@@ -47,16 +45,16 @@ export default function Experience() {
 
   useEffect(() => {
     if (context?.storedFormData) {
-      setItems(JSON.parse(context?.storedFormData).experiences);
+      setItems(JSON.parse(context?.storedFormData).educations);
     }
 
     if (context?.storedFormData) {
       context?.setFormData(JSON.parse(context?.storedFormData));
     }
 
-    if (context?.storedErrors) {
+    if (context?.storedErrors2) {
       const clone = [{}];
-      for (let i = 0; i < context.storedErrors - 1; i++) {
+      for (let i = 0; i < context.storedErrors2 - 1; i++) {
         clone.push({});
       }
       setEveryError(clone);
@@ -70,11 +68,9 @@ export default function Experience() {
 
   console.log(everyError);
 
-  
-  
   if (everyError.every((obj: any) => Object.keys(obj).length === 0) && form) {
-    navigate("/")
-   }
+    navigate("/");
+  }
   return (
     <ExperienceWrapper>
       <main>

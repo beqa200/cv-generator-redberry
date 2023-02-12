@@ -45,7 +45,7 @@ export default function Personal() {
 
   useEffect(() => {
     context?.setPageCount(1);
-
+    context.setcv(true);
     if (context?.storedFormData != undefined) {
       getLocalStorage("name", JSON.parse(context?.storedFormData).name);
       getLocalStorage("surname", JSON.parse(context?.storedFormData).surname);
