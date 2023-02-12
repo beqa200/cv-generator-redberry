@@ -1,11 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import styled from "styled-components";
 import { MyContext } from "../App";
 import { mail, phone } from "../assets";
 
-export default function CV(props: CVPropsTpye) {
+export default function CV() {
   const context = useContext(MyContext);
   console.log(context?.pageCount);
+
+ 
   return (
     <CVWrapper>
       <section
@@ -16,32 +18,32 @@ export default function CV(props: CVPropsTpye) {
       >
         <div style={{ minWidth: "432px" }}>
           <div className="fullname">
-            <h1>{props.firstname}</h1>
-            <h1>{props.lastname}</h1>
+            <h1>{context?.formData.name}</h1>
+            <h1>{context?.formData.surname}</h1>
           </div>
 
           <div className="contact">
-            {props.email && (
+            {context?.formData.email && (
               <div className="email">
                 <img src={mail} />
-                <p>{props.email}</p>
+                <p>{context?.formData.email}</p>
               </div>
             )}
-            {props.phone && (
+            {context?.formData.phone_number && (
               <div className="phone">
                 <img src={phone} />
-                <p>{props.phone}</p>
+                <p>{context?.formData.phone_number}</p>
               </div>
             )}
           </div>
-          {props.about && (
+          {context?.formData.about_me && (
             <div className="about">
               <h2>ᲩᲔᲛ ᲨᲔᲡᲐᲮᲔᲑ</h2>
-              <p>{props.about}</p>
+              <p>{context?.formData.about_me}</p>
             </div>
           )}
         </div>
-        <img className="profile-image" src={props.image} />
+        <img className="profile-image" src={context?.formData.image} />
       </section>
     </CVWrapper>
   );
@@ -51,7 +53,7 @@ const CVWrapper = styled.div`
   width: 662px;
   height: 968px;
   padding: 68px 80px 44px;
-  background-color: #ffffff;
+  background-color: white;
 
   .personal {
     display: flex;

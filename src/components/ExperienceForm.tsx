@@ -13,23 +13,20 @@ export default function ExperienceForm(props: any) {
   const context = useContext(MyContext);
   const [position, setPosition] = useState(false);
   const [employer, setEmployer] = useState(false);
-  const [startDate, setStartDate] = useState(false);
-  const [endDate, setEndDate] = useState(false);
+  const [start_date, setStart_date] = useState(false);
+  const [due_date, setDue_Date] = useState(false);
   const [description, setDescription] = useState(false);
-  const storedForm = localStorage.getItem("form");
 
   const updateFormState = (index: number, event: any, property: string) => {
-    const newItems = [...props.items];
+    const newItems = [...context?.formData.experiences];
     newItems[index][property] = event;
-    props.setItems(newItems);
+    context?.setFormData({ ...context?.formData, experiences: newItems });
   };
-
   const {
     register,
     trigger,
     setValue,
     watch,
-    handleSubmit,
     formState: { errors },
     clearErrors,
   } = useForm<any>({ mode: "all" });
@@ -37,21 +34,21 @@ export default function ExperienceForm(props: any) {
   const triggerErrors = () => {
     setEmployer(true);
     setPosition(true);
-    setStartDate(true);
-    setEndDate(true);
+    setStart_date(true);
+    setDue_Date(true);
     setDescription(true);
     trigger(`employer${props.index}`);
     trigger(`position${props.index}`);
-    trigger(`startDate${props.index}`);
-    trigger(`endDate${props.index}`);
+    trigger(`start_date${props.index}`);
+    trigger(`due_date${props.index}`);
     trigger(`description${props.index}`);
   };
 
   const clearEveryErrors = () => {
     setEmployer(false);
     setPosition(false);
-    setStartDate(false);
-    setEndDate(false);
+    setStart_date(false);
+    setDue_Date(false);
     setDescription(false);
     clearErrors();
   };
@@ -65,62 +62,52 @@ export default function ExperienceForm(props: any) {
     }
     return true;
   }
-  console.log(
-    watch(`position${props.index}`) == "" &&
+
+  const checkEverythingEmpty = () => {
+    if (
+      watch(`position${props.index}`) == "" &&
       watch(`employer${props.index}`) == "" &&
-      watch(`startDate${props.index}`) == "" &&
-      watch(`endDate${props.index}`) == "" &&
+      watch(`start_date${props.index}`) == "" &&
+      watch(`due_date${props.index}`) == "" &&
       watch(`description${props.index}`) == ""
-  );
+    ) {
+      return true;
+    }
+
+    return false;
+  };
+
   useEffect(() => {
     if (props.form == true) {
-      if (props.index == 0 && storedForm) {
-        if (isAllPropertiesEmpty(JSON.parse(storedForm))) {
+      if (props.index == 0) {
+        if (isAllPropertiesEmpty(context?.formData.experiences)) {
           triggerErrors();
         } else {
-          if (
-            watch(`position${props.index}`) == "" &&
-            watch(`employer${props.index}`) == "" &&
-            watch(`startDate${props.index}`) == "" &&
-            watch(`endDate${props.index}`) == "" &&
-            watch(`description${props.index}`) == ""
-          ) {
+          if (checkEverythingEmpty()) {
             clearEveryErrors();
           } else {
             triggerErrors();
           }
         }
       } else {
-        if (
-          watch(`employer${props.index}`) != "" ||
-          watch(`position${props.index}`) != "" ||
-          watch(`startDate${props.index}`) != "" ||
-          watch(`endDate${props.index}`) != "" ||
-          watch(`description${props.index}`) == ""
-        ) {
-          triggerErrors();
-        } else {
+        if (checkEverythingEmpty()) {
           clearEveryErrors();
+        } else {
+          triggerErrors();
         }
       }
     }
-  }, [props.form, watch(`position${props.index}`)]);
+  }, [props.form]);
 
   useEffect(() => {
-    if (
-      watch(`position${props.index}`) == "" &&
-      watch(`employer${props.index}`) == "" &&
-      watch(`startDate${props.index}`) == "" &&
-      watch(`endDate${props.index}`) == "" &&
-      watch(`description${props.index}`) == ""
-    ) {
+    if (checkEverythingEmpty()) {
       clearEveryErrors();
     }
   }, [
     watch(`position${props.index}`),
     watch(`employer${props.index}`),
-    watch(`startDate${props.index}`),
-    watch(`endDate${props.index}`),
+    watch(`start_date${props.index}`),
+    watch(`due_date${props.index}`),
     watch(`description${props.index}`),
   ]);
 
@@ -134,13 +121,13 @@ export default function ExperienceForm(props: any) {
     context?.setPageCount(2);
     const storedEmployer = localStorage.getItem(`employer${props.index}`);
     const storedPosition = localStorage.getItem(`position${props.index}`);
-    const storedStartDate = localStorage.getItem(`startDate${props.index}`);
-    const storedEndDate = localStorage.getItem(`endDate${props.index}`);
+    const storedStartDate = localStorage.getItem(`start_date${props.index}`);
+    const storedEndDate = localStorage.getItem(`due_date${props.index}`);
     const storedDescription = localStorage.getItem(`description${props.index}`);
     getLocalStorage(`employer${props.index}`, storedEmployer);
     getLocalStorage(`position${props.index}`, storedPosition);
-    getLocalStorage(`startDate${props.index}`, storedStartDate);
-    getLocalStorage(`endDate${props.index}`, storedEndDate);
+    getLocalStorage(`start_date${props.index}`, storedStartDate);
+    getLocalStorage(`due_date${props.index}`, storedEndDate);
     getLocalStorage(`description${props.index}`, storedDescription);
   }, []);
 
@@ -224,20 +211,20 @@ export default function ExperienceForm(props: any) {
           <br />
           <ShortInput
             className={
-              startDate
-                ? errors[`startDate${props.index}`]
+              start_date
+                ? errors[`start_date${props.index}`]
                   ? "error"
                   : "right"
                 : ""
             }
             type="date"
-            {...register(`startDate${props.index}`, {
+            {...register(`start_date${props.index}`, {
               required: { value: true, message: "error" },
             })}
             onChange={(e) => {
               handleChange(e);
-              setStartDate(true);
-              updateFormState(props.index, e.target.value, "startDate");
+              setStart_date(true);
+              updateFormState(props.index, e.target.value, "start_date");
             }}
           />
         </label>
@@ -246,21 +233,21 @@ export default function ExperienceForm(props: any) {
           <br />
           <ShortInput
             className={
-              endDate
-                ? errors[`endDate${props.index}`]
+              due_date
+                ? errors[`due_date${props.index}`]
                   ? "error"
                   : "right"
                 : ""
             }
             type="date"
             placeholder="დეველოპერი, დიზაინერი, ა.შ."
-            {...register(`endDate${props.index}`, {
+            {...register(`due_date${props.index}`, {
               required: { value: true, message: "error" },
             })}
             onChange={(e) => {
               handleChange(e);
-              setEndDate(true);
-              updateFormState(props.index, e.target.value, "endDate");
+              setDue_Date(true);
+              updateFormState(props.index, e.target.value, "due_date");
             }}
           />
         </label>

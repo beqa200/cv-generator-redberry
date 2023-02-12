@@ -2,51 +2,54 @@ import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { MyContext } from "../App";
 import Header from "../components/Header";
-import StyledForm from "../styled-components/components/Form";
-import { ShortInput } from "../styled-components/components/Inputs";
 import { useForm } from "react-hook-form";
-import { error } from "../assets";
 import ExperienceForm from "../components/ExperienceForm";
 import { StyledAddButton, StyledButton } from "../styled-components";
 import { useNavigate } from "react-router-dom";
 export default function Experience() {
   const context = useContext(MyContext);
 
-  const [items, setItems] = useState<any>([{position: "", employer: "", startDate: "", endDate: "", description: ""}]);
+  const [items, setItems] = useState<any>([
+    { position: "", employer: "", start_date: "", due_date: "", description: "" },
+  ]);
+
   const [form, setForm] = useState(false);
   const navigate = useNavigate();
+
   const addItem = () => {
-    const clone = [...items, {position: "", employer: "", startDate: "", endDate: "", description: ""}];
-    setItems(clone);
+    const clone = [
+      ...items,
+      {
+        position: "",
+        employer: "",
+        start_date: "",
+        due_date: "",
+        description: "",
+      },
+    ];
+    context?.setFormData({ ...context?.formData, experiences: clone });
   };
-  console.log(items);
-  const {
-    register,
-    trigger,
-    setValue,
-    watch,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Inputs>({ mode: "all" });
+
   useEffect(() => {
-   
- const storedForm = localStorage.getItem("form");
-    if (storedForm) {
-      setItems(JSON.parse(storedForm));
+    if (context?.storedFormData) {
+      setItems(JSON.parse(context?.storedFormData).experiences);
     }
-    localStorage.removeItem("form")
+
+    if (context?.storedFormData) {
+      context?.setFormData(JSON.parse(context?.storedFormData));
+    }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("form", JSON.stringify(items));
-  }, [items]);
+    localStorage.setItem("formData", JSON.stringify(context?.formData));
+  }, [context?.formData]);
 
   return (
     <ExperienceWrapper>
       <main>
         <Header />
 
-        {items.map((item: any, index: any) => (
+        {context?.formData.experiences.map((item: any, index: any) => (
           <ExperienceForm
             item={item}
             form={form}
@@ -61,9 +64,13 @@ export default function Experience() {
         </StyledAddButton>
 
         <div className="buttons">
-          <StyledButton onClick={() => {
-            navigate(-1);
-          }}>ᲣᲙᲐᲜ</StyledButton>
+          <StyledButton
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
+            ᲣᲙᲐᲜ
+          </StyledButton>
           <StyledButton
             onClick={() => {
               setForm(true);
