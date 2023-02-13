@@ -25,6 +25,7 @@ export default function Experience() {
   }, [everyError]);
 
   useEffect(() => {
+    localStorage.setItem("formData", JSON.stringify(context?.formData));
     if (context?.storedFormData) {
       setItems(JSON.parse(context?.storedFormData).educations);
     }
@@ -58,7 +59,7 @@ export default function Experience() {
         description: "",
       },
     ];
-
+    setItems(clone);
     context?.setFormData({ ...context?.formData, educations: clone });
     const clone2 = [...everyError, {}];
     setEveryError(clone2);
@@ -90,26 +91,30 @@ export default function Experience() {
     formData.append("email", context.formData.email);
     formData.append("phone_number", phoneNumber);
     context.formData.experiences.forEach((experience: any, index: number) => {
-      formData.append(`experiences[${index}][position]`, experience.position);
-      formData.append(`experiences[${index}][employer]`, experience.employer);
-      formData.append(
-        `experiences[${index}][start_date]`,
-        experience.start_date
-      );
-      formData.append(`experiences[${index}][due_date]`, experience.due_date);
-      formData.append(
-        `experiences[${index}][description]`,
-        experience.description
-      );
+      if (experience.position != "") {
+        formData.append(`experiences[${index}][position]`, experience.position);
+        formData.append(`experiences[${index}][employer]`, experience.employer);
+        formData.append(
+          `experiences[${index}][start_date]`,
+          experience.start_date
+        );
+        formData.append(`experiences[${index}][due_date]`, experience.due_date);
+        formData.append(
+          `experiences[${index}][description]`,
+          experience.description
+        );
+      }
     });
     context.formData.educations.forEach((education: any, index: number) => {
-      formData.append(`educations[${index}][institute]`, education.institute);
-      formData.append(`educations[${index}][degree_id]`, education.degree_id);
-      formData.append(`educations[${index}][due_date]`, education.due_date);
-      formData.append(
-        `educations[${index}][description]`,
-        education.description
-      );
+      if (education.institute != "") {
+        formData.append(`educations[${index}][institute]`, education.institute);
+        formData.append(`educations[${index}][degree_id]`, education.degree_id);
+        formData.append(`educations[${index}][due_date]`, education.due_date);
+        formData.append(
+          `educations[${index}][description]`,
+          education.description
+        );
+      }
     });
     // formData.append("experiences",  JSON.stringify(context.formData.experiences));
     // formData.append("educations", JSON.stringify(context.formData.educations));
@@ -150,7 +155,7 @@ export default function Experience() {
         <div className="buttons">
           <StyledButton
             onClick={() => {
-              navigate(-1);
+              navigate("/experience");
             }}
           >
             ᲣᲙᲐᲜ

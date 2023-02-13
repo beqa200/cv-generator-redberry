@@ -116,8 +116,7 @@ export default function ExperienceForm(props: any) {
 
     if (
       props.everyError.every((obj: any) => Object.keys(obj).length === 0) &&
-      props.form &&
-      position == true
+      props.form
     ) {
       navigate("/education");
     }
@@ -153,6 +152,16 @@ export default function ExperienceForm(props: any) {
       setValue(key, value);
     }
   };
+
+  useEffect(() => {
+    triggerErrors();
+
+    if (checkEverythingEmpty()) {
+      clearEveryErrors();
+    }
+    localStorage.setItem("formData", JSON.stringify(context?.formData));
+
+  }, [context.formData]);
 
   useEffect(() => {
     context?.setPageCount(2);

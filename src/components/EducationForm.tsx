@@ -145,6 +145,10 @@ export default function ExperienceForm(props: any) {
     props.setEveryError(clone);
   }
 
+  useEffect(() => {
+    localStorage.setItem("formData", JSON.stringify(context?.formData));
+  }, [context?.formData]);
+
   const handleChange = (event: any) => {
     setValue(event.target.name, event.target.value);
     localStorage.setItem(event.target.name, event.target.value);

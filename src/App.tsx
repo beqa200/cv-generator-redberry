@@ -17,7 +17,7 @@ function App() {
   const storedFormData = localStorage.getItem("formData");
   const storedErrors = localStorage.getItem("errors");
   const storedErrors2 = localStorage.getItem("errors2");
-  
+  console.log("local", storedFormData);
   const [formData, setFormData] = useState<FormData | any>({
     name: "",
     surname: "",

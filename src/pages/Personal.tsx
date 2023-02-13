@@ -58,12 +58,12 @@ export default function Personal() {
       );
       context?.setFormData(JSON.parse(context?.storedFormData));
     }
-
+    localStorage.setItem("formData", JSON.stringify(context?.formData))
    
   }, []);
 
   useEffect(() => {
-    sessionStorage.setItem("formData", JSON.stringify(context?.formData));
+    localStorage.setItem("formData", JSON.stringify(context?.formData));
   }, [context?.formData]);
 
   const handleChange = (event: any) => {

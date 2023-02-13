@@ -22,6 +22,7 @@ export default function Experience() {
   ]);
 
   useEffect(() => {
+    localStorage.setItem("formData", JSON.stringify(context?.formData))
     if (context?.storedFormData) {
       setItems(JSON.parse(context?.storedFormData).experiences);
     }
@@ -46,7 +47,7 @@ export default function Experience() {
   }, [everyError]);
 
   useEffect(() => {
-    sessionStorage.setItem("formData", JSON.stringify(context?.formData));
+    localStorage.setItem("formData", JSON.stringify(context?.formData));
   }, [context?.formData]);
 
   const addItem = () => {
@@ -60,23 +61,14 @@ export default function Experience() {
         description: "",
       },
     ];
-
+    setItems(clone);
     context?.setFormData({ ...context?.formData, experiences: clone });
     const clone2 = [...everyError, {}];
     setEveryError(clone2);
   };
 
-  // if (everyError.every((obj: any) => Object.keys(obj).length === 0) && form) {
-  //   context.setPageCount(3);
-  //  navigate("/")
-  // }
-  let count = 0;
-  function areAllObjectsEmpty(array: any) {
-    return array.every((obj: any) => Object.keys(obj).length === 0);
-  }
-console.log(areAllObjectsEmpty(everyError));
+ 
 
-console.log(everyError);
   return (
     <ExperienceWrapper>
       <main>
@@ -101,8 +93,8 @@ console.log(everyError);
         <div className="buttons">
           <StyledButton
             onClick={() => {
-              navigate(-1);
-              localStorage.setItem("formData", JSON.stringify(context?.formData));
+              navigate("/personal");
+              // localStorage.setItem("formData", JSON.stringify(context?.formData));
             }}
           >
             ᲣᲙᲐᲜ
