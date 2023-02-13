@@ -1,11 +1,34 @@
-import React, { useContext, useEffect } from "react";
+import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { MyContext } from "../App";
 import { mail, phone } from "../assets";
 
 export default function CV() {
   const context = useContext(MyContext);
+  const [options, setOptions] = useState<any>();
 
+  function isEmpty(value: any) {
+    return (
+      value === null ||
+      value === undefined ||
+      (typeof value === "string" && value.trim().length === 0) ||
+      (Array.isArray(value) && value.length === 0) ||
+      (typeof value === "object" && Object.keys(value).length === 0)
+    );
+  }
+  
+
+  useEffect(() => {
+    async function fetchData() {
+      const result = await axios.get(
+        "https://resume.redberryinternship.ge/api/degrees"
+      );
+      setOptions(result.data);
+    }
+    fetchData();
+  }, []);
+  console.log(options?.[0].title);
   return (
     <CVWrapper>
       <section
@@ -44,30 +67,48 @@ export default function CV() {
         <img className="profile-image" src={context?.formData.image} />
       </section>
 
-      
-        <section
-          className="experience"
-          style={
-            context?.pageCount == 3 ? { borderBottom: "1px solid #C8C8C8" } : {}
-          }
-        >
-          {context.pageCount == 2 && (<h2>გამოცდილება</h2>)}
-          {context.formData.experiences.map((item: any) => (
-            <div className="inner">
-              <h3 className="position">
-                {item.position} {item.employer && ","} {item.employer}
-              </h3>
+      <section
+        className="experience"
+        style={
+          context?.pageCount == 3 ? { borderBottom: "1px solid #C8C8C8" } : {}
+        }
+      >
+        {context.formData.experiences.every((object: any) => {
+    return Object.values(object).every(value => isEmpty(value));
+  }) == false && <h2>გამოცდილება</h2>}
+        {context.formData.experiences.map((item: any) => (
+          <div className="inner">
+            <h3 className="position">
+              {item.position} {item.employer && ","} {item.employer}
+            </h3>
 
-              <p className="date">
-                {item.start_date} {item.start_date && item.due_date && "-"}{" "}
-                {item.due_date}
-              </p>
+            <p className="date">
+              {item.start_date} {item.start_date && item.due_date && "-"}{" "}
+              {item.due_date}
+            </p>
 
-              <p className="description">{item.description}</p>
-            </div>
-          ))}
-        </section>
-      
+            <p className="description">{item.description}</p>
+          </div>
+        ))}
+      </section>
+
+      <section className="education">
+      {context.formData.educations.every((object: any) => {
+    return Object.values(object).every(value => isEmpty(value));
+  }) == false && <h2>განათლება</h2>}
+        {context.formData.educations.map((item: any) => (
+          <div className="inner">
+            <h3 className="position">
+              {item.institute}{", "}
+              {item.degree_id != 0 ? (options?.[item.degree_id - 1].title): null}
+            </h3>
+
+            <p className="date">{item.due_date}</p>
+
+            <p className="description">{item.description}</p>
+          </div>
+        ))}
+      </section>
     </CVWrapper>
   );
 }
@@ -75,6 +116,7 @@ export default function CV() {
 const CVWrapper = styled.div`
   width: 662px;
   height: 968px;
+  overflow-y: auto;
   padding: 68px 80px 44px;
   background-color: white;
 
@@ -140,7 +182,8 @@ const CVWrapper = styled.div`
     }
   }
 
-  .experience {
+  .experience,
+  .education {
     h2 {
       margin-top: 24px;
     }

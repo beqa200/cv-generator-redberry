@@ -56,11 +56,14 @@ export default function Personal() {
         "phone_number",
         JSON.parse(context?.storedFormData).phone_number
       );
+      context?.setFormData(JSON.parse(context?.storedFormData));
     }
+
+   
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("formData", JSON.stringify(context?.formData));
+    sessionStorage.setItem("formData", JSON.stringify(context?.formData));
   }, [context?.formData]);
 
   const handleChange = (event: any) => {
@@ -83,7 +86,7 @@ export default function Personal() {
       context?.setFormData({
         ...context?.formData,
         image: reader.result as string,
-        image2: file
+        image2: file,
       });
     };
     reader.readAsDataURL(file);

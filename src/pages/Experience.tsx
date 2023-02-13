@@ -46,7 +46,7 @@ export default function Experience() {
   }, [everyError]);
 
   useEffect(() => {
-    localStorage.setItem("formData", JSON.stringify(context?.formData));
+    sessionStorage.setItem("formData", JSON.stringify(context?.formData));
   }, [context?.formData]);
 
   const addItem = () => {
@@ -102,6 +102,7 @@ console.log(everyError);
           <StyledButton
             onClick={() => {
               navigate(-1);
+              localStorage.setItem("formData", JSON.stringify(context?.formData));
             }}
           >
             ᲣᲙᲐᲜ

@@ -118,8 +118,8 @@ export default function Experience() {
     console.log(formData.getAll("experiences[]"));
     axios
       .post("https://resume.redberryinternship.ge/api/cvs", formData)
-      .then((response) => {
-        console.log(response.data);
+      .then(() => {
+        navigate("/resume");
       })
       .catch((error) => {
         console.log(error);

@@ -207,7 +207,7 @@ export default function ExperienceForm(props: any) {
             onChange={(e) => {
               handleChange(e);
               setDegree_id(true);
-
+              localStorage.setItem("degree", watch(`degree_id${props.index}`));
               updateFormState(props.index, e.target.value, "degree_id");
             }}
           >
@@ -243,7 +243,7 @@ export default function ExperienceForm(props: any) {
           />
         </label>
         <label className="description">
-          დამთავრების რიცხვი
+          აღწერა
           <br />
           <LargeInput
             className={
@@ -254,7 +254,7 @@ export default function ExperienceForm(props: any) {
                 : ""
             }
             type="text"
-            placeholder="როლი თანამდებობაზე და ზოგადი აღწერა"
+            placeholder="განათლების აღწერა"
             {...register(`description2${props.index}`, {
               required: { value: true, message: "error" },
             })}
@@ -356,8 +356,6 @@ const ExperienceFormWrapper = styled.div`
       font-weight: 400;
       font-size: 16px;
       line-height: 21px;
-
-     
     }
   }
 
