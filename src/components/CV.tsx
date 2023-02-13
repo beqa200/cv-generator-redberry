@@ -44,14 +44,14 @@ export default function CV() {
         <img className="profile-image" src={context?.formData.image} />
       </section>
 
-      {context.formData.experiences && (
+      
         <section
           className="experience"
           style={
             context?.pageCount == 3 ? { borderBottom: "1px solid #C8C8C8" } : {}
           }
         >
-          <h2>გამოცდილება</h2>
+          {context.pageCount == 2 && (<h2>გამოცდილება</h2>)}
           {context.formData.experiences.map((item: any) => (
             <div className="inner">
               <h3 className="position">
@@ -67,7 +67,7 @@ export default function CV() {
             </div>
           ))}
         </section>
-      )}
+      
     </CVWrapper>
   );
 }
@@ -169,6 +169,7 @@ const CVWrapper = styled.div`
       text-transform: capitalize;
       color: #000000;
       word-wrap: break-word;
+      margin-bottom: 32px;
     }
   }
 `;

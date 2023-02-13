@@ -2,16 +2,15 @@ import React, { useContext, useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { MyContext } from "../App";
 import Header from "../components/Header";
-import { useForm } from "react-hook-form";
 import ExperienceForm from "../components/ExperienceForm";
 import { StyledAddButton, StyledButton } from "../styled-components";
 import { useNavigate } from "react-router-dom";
-import StyledForm from "../styled-components/components/Form";
 export default function Experience() {
   const context = useContext(MyContext);
   const [everyError, setEveryError] = useState<any>([{}]);
-  const [check, setCheck] = useState(false);
-  console.log(check);
+  const [form, setForm] = useState(false);
+  const navigate = useNavigate();
+
   const [items, setItems] = useState<any>([
     {
       position: "",
@@ -21,8 +20,34 @@ export default function Experience() {
       description: "",
     },
   ]);
-  const [form, setForm] = useState(false);
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (context?.storedFormData) {
+      setItems(JSON.parse(context?.storedFormData).experiences);
+    }
+
+    if (context?.storedFormData) {
+      context?.setFormData(JSON.parse(context?.storedFormData));
+    }
+
+    if (context?.storedErrors) {
+      const clone = [{}];
+      for (let i = 0; i < context.storedErrors - 1; i++) {
+        clone.push({});
+      }
+      setEveryError(clone);
+    }
+    context.setPageCount(2);
+    context.setcv(true);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("errors", everyError.length);
+  }, [everyError]);
+
+  useEffect(() => {
+    localStorage.setItem("formData", JSON.stringify(context?.formData));
+  }, [context?.formData]);
 
   const addItem = () => {
     const clone = [
@@ -41,40 +66,17 @@ export default function Experience() {
     setEveryError(clone2);
   };
 
-  useEffect(() => {
-    localStorage.setItem("errors", everyError.length);
-  }, [everyError]);
+  // if (everyError.every((obj: any) => Object.keys(obj).length === 0) && form) {
+  //   context.setPageCount(3);
+  //  navigate("/")
+  // }
+  let count = 0;
+  function areAllObjectsEmpty(array: any) {
+    return array.every((obj: any) => Object.keys(obj).length === 0);
+  }
+console.log(areAllObjectsEmpty(everyError));
 
-  useEffect(() => {
-    if (context?.storedFormData) {
-      setItems(JSON.parse(context?.storedFormData).experiences);
-    }
-
-    if (context?.storedFormData) {
-      context?.setFormData(JSON.parse(context?.storedFormData));
-    }
-
-    if (context?.storedErrors) {
-      const clone = [{}];
-      for (let i = 0; i < context.storedErrors - 1; i++) {
-        clone.push({});
-      }
-      setEveryError(clone);
-    }
-    context.setcv(true);
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("formData", JSON.stringify(context?.formData));
-  }, [context?.formData]);
-
-  console.log(everyError);
-
-  
-  
-  if (everyError.every((obj: any) => Object.keys(obj).length === 0) && form) {
-    navigate("/")
-   }
+console.log(everyError);
   return (
     <ExperienceWrapper>
       <main>
@@ -90,7 +92,6 @@ export default function Experience() {
             index={index}
             everyError={everyError}
             setEveryError={setEveryError}
-            setCheck={setCheck}
           />
         ))}
         <StyledAddButton onClick={addItem} className="add">

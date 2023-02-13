@@ -13,6 +13,7 @@ export default function Header() {
     <HeaderWrapper>
       {context?.pageCount == 1 && <h1>პირადი ინფო</h1>}
       {context?.pageCount == 2 && <h1>გამოცდილება</h1>}
+      {context?.pageCount == 3 && <h1>განათლება</h1>}
       <p>{context?.pageCount}/3</p>
       <img
         src={leftArrow}

@@ -83,13 +83,13 @@ export default function Personal() {
       context?.setFormData({
         ...context?.formData,
         image: reader.result as string,
+        image2: file
       });
     };
     reader.readAsDataURL(file);
   };
 
   const onSubmit = (data: Inputs) => {
-    console.log(data);
     if (Object.keys(watch("image")).length != 0) {
       navigate("/experience");
       context?.setPageCount(2);

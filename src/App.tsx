@@ -7,6 +7,7 @@ import Personal from "./pages/Personal";
 import Experience from "./pages/Experience";
 import CV from "./components/CV";
 import styled from "styled-components";
+import Education from "./pages/Education";
 
 export const MyContext = createContext<ContextProps | any>(null);
 function App() {
@@ -14,6 +15,7 @@ function App() {
   const [cv, setcv] = useState(false);
   const storedFormData = localStorage.getItem("formData");
   const storedErrors = localStorage.getItem("errors");
+  const storedErrors2 = localStorage.getItem("errors2");
   useEffect(() => {
     if (storedFormData != undefined) {
       setFormData(JSON.parse(storedFormData));
@@ -55,6 +57,7 @@ function App() {
         formData,
         setFormData,
         storedErrors,
+        storedErrors2,
         setcv
       }}
     >
@@ -65,6 +68,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/personal" element={<Personal />} />
             <Route path="/experience" element={<Experience />} />
+            <Route path="/education" element={<Education />} />
           </Routes>
         </BrowserRouter>
         {cv && <CV />}

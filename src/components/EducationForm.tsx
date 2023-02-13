@@ -5,23 +5,25 @@ import {
   LargeInput,
   LongInput,
   ShortInput,
+  ShortInputSelect,
 } from "../styled-components/components/Inputs";
 import { useForm } from "react-hook-form";
 import { done, error } from "../assets";
 import StyledForm from "../styled-components/components/Form";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 export default function ExperienceForm(props: any) {
   const context = useContext(MyContext);
-  const [position, setPosition] = useState(false);
-  const [employer, setEmployer] = useState(false);
-  const [start_date, setStart_date] = useState(false);
+  const [institute, setInstitute] = useState(false);
+  const [degree_id, setDegree_id] = useState(false);
   const [due_date, setDue_Date] = useState(false);
   const [description, setDescription] = useState(false);
-  const navigate = useNavigate();
+  const [options, setOptions] = useState([]);
+
   const updateFormState = (index: number, event: any, property: string) => {
-    const newItems = [...context?.formData.experiences];
+    const newItems = [...context?.formData.educations];
     newItems[index][property] = event;
-    context?.setFormData({ ...context?.formData, experiences: newItems });
+    context?.setFormData({ ...context?.formData, educations: newItems });
   };
 
   const {
@@ -34,35 +36,24 @@ export default function ExperienceForm(props: any) {
   } = useForm<any>({ mode: "all" });
 
   const triggerErrors = () => {
-    setEmployer(true);
-    setPosition(true);
-    setStart_date(true);
+    setDegree_id(true);
+    setInstitute(true);
     setDue_Date(true);
     setDescription(true);
-    trigger(`employer${props.index}`);
-    trigger(`position${props.index}`);
-    trigger(`start_date${props.index}`);
+    trigger(`degree_id${props.index}`);
+    trigger(`institute${props.index}`);
     trigger(`due_date${props.index}`);
-    trigger(`description${props.index}`);
-
-    if (errors) {
-      const clone = props.everyError;
-      clone[props.index] = errors;
-      props.setEveryError(clone);
-    }
+    trigger(`description2${props.index}`);
   };
 
   const clearEveryErrors = () => {
-    setEmployer(false);
-    setPosition(false);
-    setStart_date(false);
+    setDegree_id(false);
+    setInstitute(false);
     setDue_Date(false);
     setDescription(false);
     clearErrors();
-    const clone = props.everyError;
-    clone[props.index] = {};
-    props.setEveryError(clone);
   };
+
   function isAllPropertiesEmpty(arr: any) {
     for (let i = 0; i < arr.length; i++) {
       for (let property in arr[i]) {
@@ -76,11 +67,10 @@ export default function ExperienceForm(props: any) {
 
   const checkEverythingEmpty = () => {
     if (
-      watch(`position${props.index}`) == "" &&
-      watch(`employer${props.index}`) == "" &&
-      watch(`start_date${props.index}`) == "" &&
+      watch(`institute${props.index}`) == "" &&
+      watch(`degree_id${props.index}`) == "" &&
       watch(`due_date${props.index}`) == "" &&
-      watch(`description${props.index}`) == ""
+      watch(`description2${props.index}`) == ""
     ) {
       return true;
     }
@@ -91,12 +81,7 @@ export default function ExperienceForm(props: any) {
   useEffect(() => {
     if (props.form == true) {
       if (props.index == 0) {
-        if (errors) {
-          const clone = props.everyError;
-          clone[props.index] = errors;
-          props.setEveryError(clone);
-        }
-        if (isAllPropertiesEmpty(context?.formData.experiences)) {
+        if (isAllPropertiesEmpty(context?.formData.educations)) {
           triggerErrors();
         } else {
           if (checkEverythingEmpty()) {
@@ -113,39 +98,17 @@ export default function ExperienceForm(props: any) {
         }
       }
     }
-
-    if (
-      props.everyError.every((obj: any) => Object.keys(obj).length === 0) &&
-      props.form &&
-      position == true
-    ) {
-      navigate("/education");
-    }
   }, [props.form]);
 
-  useEffect(() => {
-    if (
-      props.everyError.every((obj: any) => Object.keys(obj).length === 0) &&
-      props.form
-    ) {
-      context.setPageCount(3);
-    }
-  }, [props.everyError, errors]);
   useEffect(() => {
     if (checkEverythingEmpty()) {
       clearEveryErrors();
     }
-    if (errors) {
-      const clone = props.everyError;
-      clone[props.index] = errors;
-      props.setEveryError(clone);
-    }
   }, [
-    watch(`position${props.index}`),
-    watch(`employer${props.index}`),
-    watch(`start_date${props.index}`),
+    watch(`institute${props.index}`),
+    watch(`degree_id${props.index}`),
     watch(`due_date${props.index}`),
-    watch(`description${props.index}`),
+    watch(`description2${props.index}`),
   ]);
 
   const getLocalStorage = (key: any, value: string | null) => {
@@ -155,18 +118,32 @@ export default function ExperienceForm(props: any) {
   };
 
   useEffect(() => {
-    context?.setPageCount(2);
-    const storedEmployer = localStorage.getItem(`employer${props.index}`);
-    const storedPosition = localStorage.getItem(`position${props.index}`);
-    const storedStartDate = localStorage.getItem(`start_date${props.index}`);
+    async function fetchData() {
+      const result = await axios.get(
+        "https://resume.redberryinternship.ge/api/degrees"
+      );
+      setOptions(result.data);
+    }
+    fetchData();
+    context?.setPageCount(3);
+    const storedDegree = localStorage.getItem(`degree_id${props.index}`);
+    const storedInstitute = localStorage.getItem(`institute${props.index}`);
     const storedEndDate = localStorage.getItem(`due_date${props.index}`);
-    const storedDescription = localStorage.getItem(`description${props.index}`);
-    getLocalStorage(`employer${props.index}`, storedEmployer);
-    getLocalStorage(`position${props.index}`, storedPosition);
-    getLocalStorage(`start_date${props.index}`, storedStartDate);
+    const storedDescription = localStorage.getItem(
+      `description2${props.index}`
+    );
+    console.log("sdsd", storedDegree);
+    getLocalStorage(`degree_id${props.index}`, storedDegree);
+    getLocalStorage(`institute${props.index}`, storedInstitute);
     getLocalStorage(`due_date${props.index}`, storedEndDate);
-    getLocalStorage(`description${props.index}`, storedDescription);
+    getLocalStorage(`description2${props.index}`, storedDescription);
   }, []);
+
+  if (errors) {
+    const clone = props.everyError;
+    clone[props.index] = errors;
+    props.setEveryError(clone);
+  }
 
   const handleChange = (event: any) => {
     setValue(event.target.name, event.target.value);
@@ -178,32 +155,32 @@ export default function ExperienceForm(props: any) {
   return (
     <ExperienceFormWrapper>
       <StyledForm>
-        <label className="position">
-          თანამდებობა
+        <label className="institute">
+          სასწავლებელი
           <br />
           <LongInput
             className={
-              position
-                ? errors[`position${props.index}`]
+              institute
+                ? errors[`institute${props.index}`]
                   ? "error"
                   : "right"
                 : ""
             }
             type="text"
-            placeholder="დეველოპერი, დიზაინერი, ა.შ."
-            {...register(`position${props.index}`, {
+            placeholder="სასწავლებელი"
+            {...register(`institute${props.index}`, {
               minLength: { value: 2, message: "Please enter valid name" },
               required: { value: true, message: "error" },
             })}
             onChange={(e) => {
               handleChange(e);
-              setPosition(true);
-              updateFormState(props.index, e.target.value, "position");
+              setInstitute(true);
+              updateFormState(props.index, e.target.value, "institute");
             }}
           />
           <p>მინიმუმ 2 სიმბოლო</p>
-          {position ? (
-            errors[`position${props.index}`] + props.index ? (
+          {institute ? (
+            errors[`institute${props.index}`] + props.index ? (
               <img src={error} className="error-image" />
             ) : (
               <img src={done} className="done-image" />
@@ -211,60 +188,37 @@ export default function ExperienceForm(props: any) {
           ) : null}
         </label>
 
-        <label className="employer">
-          დამსაქმებელი
+        <label className="degree_id">
+          ხარისხი
           <br />
-          <LongInput
+          <ShortInputSelect
             className={
-              employer
-                ? errors[`employer${props.index}`]
+              degree_id
+                ? errors[`degree_id${props.index}`]
                   ? "error"
                   : "right"
                 : ""
             }
-            type="text"
-            placeholder="დამსაქმებელი"
-            {...register(`employer${props.index}`, {
-              minLength: { value: 2, message: "Please enter valid name" },
+            value={watch(`degree_id${props.index}`)}
+            placeholder="აირჩიეთ ხარისხი"
+            {...register(`degree_id${props.index}`, {
               required: { value: true, message: "error" },
             })}
             onChange={(e) => {
               handleChange(e);
-              setEmployer(true);
-              updateFormState(props.index, e.target.value, "employer");
+              setDegree_id(true);
+
+              updateFormState(props.index, e.target.value, "degree_id");
             }}
-          />
+          >
+            <option value={""}>აირჩიეთ ხარისხი</option>
+            {options.map((item: any) => (
+              <option value={item.id}>{item.title}</option>
+            ))}
+          </ShortInputSelect>
           <p>მინიმუმ 2 სიმბოლო</p>
-          {employer ? (
-            errors[`employer${props.index}`] ? (
-              <img src={error} className="error-image" />
-            ) : (
-              <img src={done} className="done-image" />
-            )
-          ) : null}
         </label>
-        <label className="start-date">
-          დაწყების რიცხვი
-          <br />
-          <ShortInput
-            className={
-              start_date
-                ? errors[`start_date${props.index}`]
-                  ? "error"
-                  : "right"
-                : ""
-            }
-            type="date"
-            {...register(`start_date${props.index}`, {
-              required: { value: true, message: "error" },
-            })}
-            onChange={(e) => {
-              handleChange(e);
-              setStart_date(true);
-              updateFormState(props.index, e.target.value, "start_date");
-            }}
-          />
-        </label>
+
         <label className="end-date">
           დამთავრების რიცხვი
           <br />
@@ -289,19 +243,19 @@ export default function ExperienceForm(props: any) {
           />
         </label>
         <label className="description">
-          აღწერა
+          დამთავრების რიცხვი
           <br />
           <LargeInput
             className={
               description
-                ? errors[`description${props.index}`]
+                ? errors[`description2${props.index}`]
                   ? "error"
                   : "right"
                 : ""
             }
             type="text"
-            placeholder="განათლების აღწერა"
-            {...register(`description${props.index}`, {
+            placeholder="როლი თანამდებობაზე და ზოგადი აღწერა"
+            {...register(`description2${props.index}`, {
               required: { value: true, message: "error" },
             })}
             onChange={(e) => {
@@ -323,6 +277,9 @@ const ExperienceFormWrapper = styled.div`
   margin: auto;
   padding-bottom: 58px;
   form {
+    option {
+      width: 100px;
+    }
     label {
       margin-top: 31px;
       font-weight: 500;
@@ -349,11 +306,12 @@ const ExperienceFormWrapper = styled.div`
         right: 13.5px;
       }
     }
-    .position,
-    .employer,
+    .institute,
+    .degree_id,
     .description {
       width: 100%;
     }
+
     .wrapper {
       display: flex;
       align-items: center;
@@ -379,8 +337,9 @@ const ExperienceFormWrapper = styled.div`
         font-size: 14px;
       }
     }
-    .start-date,
-    .end-date {
+
+    .end-date,
+    .degree_id {
       width: calc(45% - 7px);
 
       input {
@@ -389,6 +348,16 @@ const ExperienceFormWrapper = styled.div`
         font-size: 16px;
         line-height: 21px;
       }
+    }
+  }
+  .degree_id {
+    select {
+      padding: 0px 15px;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 21px;
+
+     
     }
   }
 
