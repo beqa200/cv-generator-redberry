@@ -26,6 +26,7 @@ height: 48px;
 const LargeInput = styled(LongInput)`
   padding-bottom: 69px;
   word-wrap: break-word;
+  white-space: pre-wrap;
 `;
 
 const CustomInputMask = styled(InputMask)`

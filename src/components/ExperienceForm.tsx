@@ -22,6 +22,7 @@ export default function ExperienceForm(props: any) {
     const newItems = [...context?.formData.experiences];
     newItems[index][property] = event;
     context?.setFormData({ ...context?.formData, experiences: newItems });
+    localStorage.setItem("formData", JSON.stringify(context?.formData));
   };
 
   const {
@@ -155,15 +156,14 @@ export default function ExperienceForm(props: any) {
 
   useEffect(() => {
     triggerErrors();
-
+    localStorage.setItem("formData", JSON.stringify(context?.formData));
     if (checkEverythingEmpty()) {
       clearEveryErrors();
     }
-    localStorage.setItem("formData", JSON.stringify(context?.formData));
-
   }, [context.formData]);
 
   useEffect(() => {
+    localStorage.setItem("formData", JSON.stringify(context?.formData));
     context?.setPageCount(2);
     const storedEmployer = localStorage.getItem(`employer${props.index}`);
     const storedPosition = localStorage.getItem(`position${props.index}`);

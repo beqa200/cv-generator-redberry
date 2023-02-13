@@ -25,7 +25,6 @@ export default function Experience() {
   }, [everyError]);
 
   useEffect(() => {
-    localStorage.setItem("formData", JSON.stringify(context?.formData));
     if (context?.storedFormData) {
       setItems(JSON.parse(context?.storedFormData).educations);
     }
@@ -44,10 +43,6 @@ export default function Experience() {
     context.setPageCount(3);
     context.setcv(true);
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem("formData", JSON.stringify(context?.formData));
-  }, [context?.formData]);
 
   const addItem = () => {
     const clone = [
@@ -81,10 +76,8 @@ export default function Experience() {
 
   const submit = () => {
     let file = dataURLtoFile(context.formData.image, "image-name.png");
-    console.log(file);
     let phoneNumber = context?.formData.phone_number.replace(/ /g, "");
 
-    console.log(phoneNumber);
     const formData = new FormData();
     formData.append("name", context.formData.name);
     formData.append("surname", context.formData.surname);
@@ -120,7 +113,6 @@ export default function Experience() {
     // formData.append("educations", JSON.stringify(context.formData.educations));
     formData.append("image", file);
     formData.append("about_me", context.formData.about_me);
-    console.log(formData.getAll("experiences[]"));
     axios
       .post("https://resume.redberryinternship.ge/api/cvs", formData)
       .then(() => {
@@ -189,7 +181,7 @@ const ExperienceWrapper = styled.div`
       display: flex;
       justify-content: space-between;
       width: 798px;
-      margin: 111px auto;
+      margin: 41px auto;
     }
   }
 `;

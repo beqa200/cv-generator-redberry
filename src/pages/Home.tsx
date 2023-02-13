@@ -6,10 +6,10 @@ import { background, logo, redberryLogo } from "../assets";
 
 export default function Home() {
   const navigate = useNavigate();
-    const context = useContext(MyContext);
+  const context = useContext(MyContext);
   useEffect(() => {
     context.setcv(false);
-  }, [])
+  }, []);
   return (
     <HomeWrapper>
       <header>

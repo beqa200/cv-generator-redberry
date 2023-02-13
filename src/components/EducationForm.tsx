@@ -24,6 +24,7 @@ export default function ExperienceForm(props: any) {
     const newItems = [...context?.formData.educations];
     newItems[index][property] = event;
     context?.setFormData({ ...context?.formData, educations: newItems });
+    localStorage.setItem("formData", JSON.stringify(context?.formData));
   };
 
   const {
@@ -118,6 +119,7 @@ export default function ExperienceForm(props: any) {
   };
 
   useEffect(() => {
+    localStorage.setItem("formData", JSON.stringify(context?.formData));
     async function fetchData() {
       const result = await axios.get(
         "https://resume.redberryinternship.ge/api/degrees"
@@ -132,7 +134,6 @@ export default function ExperienceForm(props: any) {
     const storedDescription = localStorage.getItem(
       `description2${props.index}`
     );
-    console.log("sdsd", storedDegree);
     getLocalStorage(`degree_id${props.index}`, storedDegree);
     getLocalStorage(`institute${props.index}`, storedInstitute);
     getLocalStorage(`due_date${props.index}`, storedEndDate);

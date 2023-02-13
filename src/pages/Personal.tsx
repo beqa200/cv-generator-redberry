@@ -42,10 +42,11 @@ export default function Personal() {
       setValue(key, value);
     }
   };
-
+  localStorage.setItem("formData", JSON.stringify(context?.formData));
   useEffect(() => {
     context?.setPageCount(1);
     context.setcv(true);
+
     if (context?.storedFormData != undefined) {
       getLocalStorage("name", JSON.parse(context?.storedFormData).name);
       getLocalStorage("surname", JSON.parse(context?.storedFormData).surname);
@@ -58,8 +59,6 @@ export default function Personal() {
       );
       context?.setFormData(JSON.parse(context?.storedFormData));
     }
-    localStorage.setItem("formData", JSON.stringify(context?.formData))
-   
   }, []);
 
   useEffect(() => {

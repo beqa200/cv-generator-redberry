@@ -20,9 +20,8 @@ export default function Experience() {
       description: "",
     },
   ]);
-
+  localStorage.setItem("formData", JSON.stringify(context?.formData));
   useEffect(() => {
-    localStorage.setItem("formData", JSON.stringify(context?.formData))
     if (context?.storedFormData) {
       setItems(JSON.parse(context?.storedFormData).experiences);
     }
@@ -67,8 +66,6 @@ export default function Experience() {
     setEveryError(clone2);
   };
 
- 
-
   return (
     <ExperienceWrapper>
       <main>
@@ -94,7 +91,6 @@ export default function Experience() {
           <StyledButton
             onClick={() => {
               navigate("/personal");
-              // localStorage.setItem("formData", JSON.stringify(context?.formData));
             }}
           >
             ᲣᲙᲐᲜ
@@ -127,7 +123,7 @@ const ExperienceWrapper = styled.div`
       display: flex;
       justify-content: space-between;
       width: 798px;
-      margin: 111px auto;
+      margin: 41px auto;
     }
   }
 `;

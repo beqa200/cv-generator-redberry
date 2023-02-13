@@ -17,7 +17,6 @@ export default function CV() {
       (typeof value === "object" && Object.keys(value).length === 0)
     );
   }
-  
 
   useEffect(() => {
     async function fetchData() {
@@ -28,7 +27,6 @@ export default function CV() {
     }
     fetchData();
   }, []);
-  console.log(options?.[0].title);
   return (
     <CVWrapper>
       <section
@@ -74,8 +72,8 @@ export default function CV() {
         }
       >
         {context.formData.experiences.every((object: any) => {
-    return Object.values(object).every(value => isEmpty(value));
-  }) == false && <h2>გამოცდილება</h2>}
+          return Object.values(object).every((value) => isEmpty(value));
+        }) == false && <h2>გამოცდილება</h2>}
         {context.formData.experiences.map((item: any) => (
           <div className="inner">
             <h3 className="position">
@@ -93,14 +91,15 @@ export default function CV() {
       </section>
 
       <section className="education">
-      {context.formData.educations.every((object: any) => {
-    return Object.values(object).every(value => isEmpty(value));
-  }) == false && <h2>განათლება</h2>}
+        {context.formData.educations.every((object: any) => {
+          return Object.values(object).every((value) => isEmpty(value));
+        }) == false && <h2>განათლება</h2>}
         {context.formData.educations.map((item: any) => (
           <div className="inner">
             <h3 className="position">
-              {item.institute}{", "}
-              {item.degree_id != 0 ? (options?.[item.degree_id - 1].title): null}
+              {item.institute}
+              {", "}
+              {item.degree_id != 0 ? options?.[item.degree_id - 1].title : null}
             </h3>
 
             <p className="date">{item.due_date}</p>

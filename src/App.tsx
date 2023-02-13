@@ -17,7 +17,6 @@ function App() {
   const storedFormData = localStorage.getItem("formData");
   const storedErrors = localStorage.getItem("errors");
   const storedErrors2 = localStorage.getItem("errors2");
-  console.log("local", storedFormData);
   const [formData, setFormData] = useState<FormData | any>({
     name: "",
     surname: "",
@@ -48,7 +47,6 @@ function App() {
       setFormData(JSON.parse(storedFormData));
     }
   }, []);
-  console.log(formData);
 
   return (
     <MyContext.Provider
@@ -60,7 +58,7 @@ function App() {
         setFormData,
         storedErrors,
         storedErrors2,
-        setcv
+        setcv,
       }}
     >
       <GlobalStyles />

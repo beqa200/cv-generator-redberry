@@ -8,7 +8,6 @@ export default function Header() {
   const context = useContext(MyContext);
   const navigate = useNavigate();
 
-  
   return (
     <HeaderWrapper>
       {context?.pageCount == 1 && <h1>პირადი ინფო</h1>}
